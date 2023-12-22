@@ -1,4 +1,11 @@
+import List from "./components/List";
+
 const ProjectList = () => {
-  return <div>ProjectList</div>
+  return (
+    <div>
+      <List />
+    </div>
+  )
 }
+
 export default ProjectList;

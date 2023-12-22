@@ -5,28 +5,29 @@ import { Suspense, useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
 import Loading from './loading';
+import { useRouter } from 'next/navigation';
 
 
-type Items = NonNullable<MenuProps["items"]>[number] & {
-  path?: string
-}
+type Items = NonNullable<MenuProps["items"]>[number]
 const items: Items[] = [
   {
     label: '项目管理',
     key: 'project',
-    path: '/admin/project/list',
   },
   {
     label: '角色管理',
     key: 'role',
-    path: '/admin/role/list',
   },
   {
     label: '账号管理',
     key: 'user',
-    path: '/admin/user/list',
   }
-]
+] as const;
+const paths: { [index: string]: string } = {
+  project: '/admin/project/list',
+  role: '/admin/role/list',
+  user: '/admin/user/list',
+}
 const AdminLayout = ({
   children
 }: {
@@ -34,8 +35,11 @@ const AdminLayout = ({
 }) => {
   const { Sider, Header, Content } = Layout;
   const [current, setCurrent] = useState('project');
-  const onClick: MenuProps['onClick'] = (e) => {
-    setCurrent(e.key);
+  const router = useRouter();
+  const onClick: MenuProps['onClick'] = (item) => {
+    console.log(item)
+    setCurrent(item.key);
+    router.push(paths[item.key])
   };
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -45,17 +49,14 @@ const AdminLayout = ({
           theme="dark"
           items={items}
           selectedKeys={[current]}
-          onClick={onClick}
+          onClick={(evt) => onClick(evt)}
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: '#fff' }}/>
+        <Header style={{ padding: 0, background: '#fff' }} />
         <Content style={{ margin: '24px 16px 0' }}>
           <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-            }}
+            className='p-6 bg-white'
           >
             <Suspense fallback={<Loading />}>
               {children}
@@ -64,7 +65,7 @@ const AdminLayout = ({
         </Content>
       </Layout>
     </Layout>
-  
+
   )
 }
 export default AdminLayout;
