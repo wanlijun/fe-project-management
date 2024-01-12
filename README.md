@@ -34,3 +34,37 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+
+- 队列
+  - 优先队列
+- 哈希表
+  - 哈希算法
+  - 解决冲突
+- 树
+  - 先序 中序 后序遍历
+  - 二叉搜索树
+  - 平衡树（树转平衡树）
+  - 红黑树（了解概念）
+- 图
+  - 图的遍历 （bsd, dfs）
+  - 最短路径
+- 串
+  - KMP算法
+- 排序
+  - 冒泡
+  - 插入
+  - 快速
+  - 归并
+  - 选择
+  - 堆排序
+- 搜索
+  - 线性搜索
+  - 二分搜索
+- 常见的算法思想
+  - BF
+  - 贪心
+  - 分治
+  - 动态规划
+  - 回朔
+
