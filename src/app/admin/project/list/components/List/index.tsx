@@ -1,7 +1,8 @@
 "use client"
 
 import { Button, Table, Modal } from 'antd';
-import AddProject from '../AddProject';
+import AddProject, {IBaseInfo} from '../AddProject'
+import Link from 'next/link';
 
 interface RecordType {
   id: number;
@@ -29,31 +30,6 @@ const columns = [
     key: 'platform',
     render: (data: any) => {
       return <a>查看详情</a>
-      // return data.map((item: any, idx: number) => {
-      //   return (
-      //     <div key={idx} className='mb-2'>
-      //       <div className='font-bold'>{item.name}</div>
-      //       {
-      //         item.environment.map((env: any, envIdx: number) => {
-      //           return (
-      //             <div key={envIdx}>
-      //               <div> <a href={env.url}>{env.name}</a>:</div>
-      //               <div className='mb-2'>
-      //                 {
-      //                   env.account.map((item: string, idx: number) => {
-      //                     return <div key={idx}>{item}</div>
-      //                   })
-      //                 }
-
-      //               </div>
-      //             </div>
-      //           )
-      //         })
-      //       }
-      //     </div>
-      //   )
-      // })
-
     }
   },
   {
@@ -77,6 +53,9 @@ const columns = [
     title: '操作',
     dataIndex: 'operation',
     key: 'operation',
+    render: (value: any, row: any) => {
+      return <Link href={`/admin/project/form/${row.id}`}>完善信息</Link>
+    }
   },
 ];
 const dataSource = [
@@ -153,7 +132,6 @@ const dataSource = [
   },
 ];
 const List = () => {
-
   return (
     <>
       <div className="text-right m-4">
@@ -161,8 +139,11 @@ const List = () => {
           <Button>添加</Button>
         </AddProject>
       </div>
-
-      <Table bordered dataSource={dataSource} columns={columns} />
+      <Table
+        rowKey="id"
+        bordered
+        dataSource={dataSource}
+        columns={columns} />
     </>
   );
 }

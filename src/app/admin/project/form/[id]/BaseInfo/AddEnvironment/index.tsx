@@ -5,11 +5,6 @@ import { useState } from 'react';
 interface IAddProject {
   children: React.ReactNode,
 }
-export interface IBaseInfo {
-  name: string;
-  shortName: string;
-  brief: string;
-}
 const AddProject: React.FC<IAddProject> = ({
   children,
 }) => {
@@ -40,37 +35,23 @@ const AddProject: React.FC<IAddProject> = ({
         {children}
       </div>
       <Modal
-        title="项目基本信息"
+        title="添加环境"
         open={visible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
         <Form
           className='pt-5'
-          labelCol={{span: 4}}
-          wrapperCol={{span: 20}}
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 20 }}
           form={form}
         >
-          <Form.Item<IBaseInfo>
-            label="项目名称"
+          <Form.Item
+            label="环境名称"
             name="name"
-            rules={[{ required: true, message: '请输入项目名称' }]}
+            rules={[{ required: true, message: '请输入平台名称' }]}
           >
             <Input />
-          </Form.Item>
-          <Form.Item<IBaseInfo>
-            label="项目简称"
-            name="shortName"
-            rules={[{ required: true, message: '请输入项目名称' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item<IBaseInfo>
-            label="简介"
-            name="brief"
-            rules={[{ required: true, message: '请输入项目名称' }]}
-          >
-            <Input.TextArea />
           </Form.Item>
         </Form>
       </Modal>
