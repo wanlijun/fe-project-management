@@ -66,6 +66,9 @@ const AccountAndUrl: React.FC<IAccountAndUrl> = ({
           )
         })
       }
+      <Form.Item label="备注">
+        <Input.TextArea></Input.TextArea>
+      </Form.Item>
     </div >
   )
 }

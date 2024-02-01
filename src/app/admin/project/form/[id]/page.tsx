@@ -1,7 +1,10 @@
 "use client"
 import { Form, Button } from 'antd';
+import  Box from '@/components/Box';
 import BaseInfo from './BaseInfo';
 import AccountAndUrl from './AccountAndUrl';
+import FrontEndInfo from './FrontEndInfo';
+
 
 const EditProject = () => {
   const [form] = Form.useForm()
@@ -20,17 +23,15 @@ const EditProject = () => {
       labelCol={{ span: 2 }}
       wrapperCol={{ span: 18 }}
     >
-      <div>
-        <div className="text-base font-bold mb-4">基础信息</div>
+      <Box title='基础信息'>
         <BaseInfo />
-      </div>
-      <div>
-        <div className="text-base font-bold mb-4">账号和访问地址</div>
+      </Box>
+      <Box title='账号和访问地址'>
         <AccountAndUrl form={form} />
-      </div>
-      <div>
-        <div className="text-base font-bold mb-4">前端</div>
-      </div>
+      </Box>
+      <Box title='前端'>
+        <FrontEndInfo form={form} />
+      </Box>
       <Form.Item label=" " colon={false}>
         <Button type="primary" htmlType="submit">
           保存

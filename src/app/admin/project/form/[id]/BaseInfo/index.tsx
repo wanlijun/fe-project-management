@@ -1,4 +1,4 @@
-import { Form, Input, Select, Space } from 'antd';
+import { Form, Input, Select } from 'antd';
 import AddPlatform from './AddPlatform';
 import AddEnvironment from './AddEnvironment';
 
