@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Form, Radio, FormInstance, Input, Select, Space, Divider, Button, message } from 'antd';
-import { OPTIONS } from '../BaseInfo';
+import { OPTIONS, EVN_OPTIONS } from '../BaseInfo';
 import { PlusCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { getLabelByValue } from '@/utils/common';
+import { DEPLOY_METHOD } from './helper';
 interface IFrontEndInfo {
   form: FormInstance
 }
 const FrontEndInfo: React.FC<IFrontEndInfo> = ({
   form
 }) => {
+  const environment = Form.useWatch('environment', form) || []
   const gitUrlType = Form.useWatch('gitUrlType', form)
   const [name, setName] = useState('');
   const [options, setOptions] = useState(OPTIONS)
@@ -87,7 +90,7 @@ const FrontEndInfo: React.FC<IFrontEndInfo> = ({
                         {
                           idx === fields.length - 1 &&
                           <PlusCircleOutlined
-                            className='text-xl cursor-pointer'
+                            className='text-xl cursor-pointer mb-7'
                             style={{ color: '#1677ff' }}
                             onClick={() => add()}
                           />
@@ -96,7 +99,7 @@ const FrontEndInfo: React.FC<IFrontEndInfo> = ({
                         {
                           fields.length > 1 &&
                           <MinusCircleOutlined
-                            className='text-xl cursor-pointer'
+                            className='text-xl cursor-pointer mb-7'
                             style={{ color: '#1677ff' }}
                             onClick={() => remove(idx)}
                           />
@@ -112,6 +115,108 @@ const FrontEndInfo: React.FC<IFrontEndInfo> = ({
         </Form.Item>
 
       }
+      <Form.Item label="部署方式">
+        {
+          environment.map((env: string, idx: number) => {
+            return (
+              <div key={idx}>
+                <Form.Item name={['deploy', idx, 'env']} initialValue={env}>
+                  <div className='font-bold'>
+                    {getLabelByValue(EVN_OPTIONS, env)}
+
+                  </div>
+                </Form.Item>
+                <Form.List
+                  name={['deploy', idx, 'data']}
+                  initialValue={[{}]}
+                >
+                  {(fields, { add, remove }) => (
+                    <div>
+                      {
+                        fields.map((field, idx) => {
+                          return (
+                            <Space key={idx} >
+                              <Form.Item name={[field.name, 'name']}>
+                                <Select
+                                  options={options}
+                                  placeholder="请选择部署平台"
+                                  style={{ width: 200 }}
+                                  dropdownRender={(menu) => (
+                                    <>
+                                      {menu}
+                                      <Divider style={{ margin: '8px 0' }} />
+                                      <Space style={{ padding: '0 8px 4px' }}>
+                                        <Input
+                                          placeholder="项目名称"
+                                          value={name}
+                                          onChange={onNameChange}
+                                          onKeyDown={(e) => e.stopPropagation()}
+                                        />
+                                        <Button type="text" icon={<PlusOutlined />} onClick={addItem}>
+                                          添加
+                                        </Button>
+                                      </Space>
+                                    </>
+                                  )}
+                                />
+                              </Form.Item>
+                              <Form.Item name={[field.name, 'name']}>
+                                <Select
+                                  options={DEPLOY_METHOD}
+                                  placeholder="请选择部署方式"
+                                  style={{ width: 200 }}
+                                  dropdownRender={(menu) => (
+                                    <>
+                                      {menu}
+                                      <Divider style={{ margin: '8px 0' }} />
+                                      <Space style={{ padding: '0 8px 4px' }}>
+                                        <Input
+                                          placeholder="部署方式"
+                                          value={name}
+                                          onChange={onNameChange}
+                                          onKeyDown={(e) => e.stopPropagation()}
+                                        />
+                                        <Button type="text" icon={<PlusOutlined />} onClick={addItem}>
+                                          添加
+                                        </Button>
+                                      </Space>
+                                    </>
+                                  )}
+                                />
+                              </Form.Item>
+                              <Form.Item name={[field.name, 'url']}>
+                                <Input placeholder="请填写备注" style={{ width: 280 }} />
+                              </Form.Item>
+                              {
+                                idx === fields.length - 1 &&
+                                <PlusCircleOutlined
+                                  className='text-xl cursor-pointer mb-7'
+                                  style={{ color: '#1677ff' }}
+                                  onClick={() => add()}
+                                />
+                              }
+
+                              {
+                                fields.length > 1 &&
+                                <MinusCircleOutlined
+                                  className='text-xl cursor-pointer mb-7'
+                                  style={{ color: '#1677ff' }}
+                                  onClick={() => remove(idx)}
+                                />
+                              }
+                            </Space>
+
+                          )
+                        })
+                      }
+                    </div>
+                  )}
+                </Form.List>
+              </div>
+            )
+          })
+        }
+      </Form.Item>
     </div>
   )
 }
