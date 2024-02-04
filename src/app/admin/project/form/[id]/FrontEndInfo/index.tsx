@@ -3,7 +3,7 @@ import { Form, Radio, FormInstance, Input, Select, Space, Divider, Button, messa
 import { OPTIONS, EVN_OPTIONS } from '../BaseInfo';
 import { PlusCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { getLabelByValue } from '@/utils/common';
-import { DEPLOY_METHOD } from './helper';
+import { DEPLOY_OPTIONS } from './helper';
 interface IFrontEndInfo {
   form: FormInstance
 }
@@ -160,9 +160,9 @@ const FrontEndInfo: React.FC<IFrontEndInfo> = ({
                                   )}
                                 />
                               </Form.Item>
-                              <Form.Item name={[field.name, 'name']}>
+                              <Form.Item name={[field.name, 'method']}>
                                 <Select
-                                  options={DEPLOY_METHOD}
+                                  options={DEPLOY_OPTIONS}
                                   placeholder="请选择部署方式"
                                   style={{ width: 200 }}
                                   dropdownRender={(menu) => (
