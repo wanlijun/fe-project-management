@@ -1,8 +1,11 @@
 "use client"
 
 import { Button, Table, Modal } from 'antd';
-import AddProject, {IBaseInfo} from '../AddProject'
+import AddProject, { IBaseInfo } from '../AddProject'
 import Link from 'next/link';
+import { useAntdTable } from 'ahooks';
+import { getProject } from '@/api/project';
+import { useEffect } from 'react';
 
 interface RecordType {
   id: number;
@@ -21,8 +24,8 @@ const columns = [
   },
   {
     title: '简称',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'shortName',
+    key: 'shortName',
   },
   {
     title: '访问地址/账号',
@@ -37,6 +40,9 @@ const columns = [
     dataIndex: 'platform',
     key: 'platform',
     render: (data: any) => {
+      if (!data) {
+        return;
+      }
       return data.map((item: any, idx: number) => {
         return (
           <div key={idx} className='mb-1'>
@@ -58,80 +64,11 @@ const columns = [
     }
   },
 ];
-const dataSource = [
-  {
-    id: 0,
-    name: '两江统战',
-    nameCol: 5,
-    platform: [
-      {
-        name: 'pc',
-        gitUlr: 'http://sc-git',
-        environment: [
-          {
-            name: '测试环境',
-            url: 'http://baiduc.com',
-            account: ['1311111111/1qaz2wsx', '1311111111/1qaz2wsx']
-          },
-          {
-            name: '试运行',
-            url: 'http://baiduc.com',
-            account: ['1311111111/1qaz2wsx']
-          },
-          {
-            name: '正式',
-            url: 'http://baiduc.com',
-            account: ['1311111111/1qaz2wsx']
-          },
-        ]
-      },
-      {
-        name: '大屏',
-        gitUlr: 'http://sc-git',
-        environment: [
-          {
-            name: '测试环境',
-            url: 'http://baiduc.com',
-            account: ['1311111111/1qaz2wsx']
-          },
-          {
-            name: '试运行',
-            url: 'http://baiduc.com',
-            account: ['1311111111/1qaz2wsx']
-          },
-          {
-            name: '正式',
-            url: 'http://baiduc.com',
-            account: ['1311111111/1qaz2wsx']
-          },
-        ]
-      },
-      {
-        name: '后台',
-        gitUlr: 'http://sc-git',
-        environment: [
-          {
-            name: '测试环境',
-            url: 'http://baiduc.com',
-            account: ['1311111111/1qaz2wsx']
-          },
-          {
-            name: '试运行',
-            url: 'http://baiduc.com',
-            account: ['1311111111/1qaz2wsx']
-          },
-          {
-            name: '正式',
-            url: 'http://baiduc.com',
-            account: ['1311111111/1qaz2wsx']
-          },
-        ]
-      },
-    ]
-
-  },
-];
 const List = () => {
+  const { tableProps, refresh } = useAntdTable(getProject)
+  useEffect(() => {
+    console.log('=====?')
+  }, [])
   return (
     <>
       <div className="text-right m-4">
@@ -142,8 +79,9 @@ const List = () => {
       <Table
         rowKey="id"
         bordered
-        dataSource={dataSource}
-        columns={columns} />
+        columns={columns}
+        {...tableProps}
+      />
     </>
   );
 }

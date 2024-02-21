@@ -2,8 +2,10 @@
 import React from 'react';
 import { Form, Input, Modal } from 'antd';
 import { useState } from 'react';
+import { postProject } from '@/api/project'
 interface IAddProject {
   children: React.ReactNode,
+  refreshList?: () => void;
 }
 export interface IBaseInfo {
   name: string;
@@ -12,6 +14,7 @@ export interface IBaseInfo {
 }
 const AddProject: React.FC<IAddProject> = ({
   children,
+  refreshList
 }) => {
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
@@ -20,8 +23,11 @@ const AddProject: React.FC<IAddProject> = ({
       .validateFields()
       .then((values) => {
         form.resetFields();
-        console.log('--- create value', values)
-        setVisible(false)
+        postProject(values)
+          .then(() => {
+            setVisible(false)
+            // refreshList()
+          })
       })
       .catch((info) => {
         console.log('Validate Failed:', info);
@@ -47,8 +53,8 @@ const AddProject: React.FC<IAddProject> = ({
       >
         <Form
           className='pt-5'
-          labelCol={{span: 4}}
-          wrapperCol={{span: 20}}
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 20 }}
           form={form}
         >
           <Form.Item<IBaseInfo>
