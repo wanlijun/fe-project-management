@@ -10,7 +10,6 @@ interface IFormValue {
 }
 const Login = () => {
   const router = useRouter()
-  const [fetchData, setFetchData] = useState(false); // 创建一个状态用来控制是否需要请求数据
   const onLogin = async (value: IFormValue) => {
     try {
       const data = await fetcher('/api/auth/login', {
@@ -18,7 +17,6 @@ const Login = () => {
         body: JSON.stringify(value)
       })
       localStorage.setItem('token', data.access_token)
-      console.log(data, '=====????');
       router.push('/admin/project/list')
     } catch (error) {
       console.log(error, '=====')

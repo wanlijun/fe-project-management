@@ -1,19 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Radio, FormInstance, Input, Select, Space, Divider, Button, message } from 'antd';
-import { OPTIONS, EVN_OPTIONS } from '../BaseInfo';
 import { PlusCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { getLabelByValue } from '@/utils/common';
+import { extractName, getLabelByValue } from '@/utils/common';
 import { DEPLOY_OPTIONS } from './helper';
 interface IFrontEndInfo {
-  form: FormInstance
+  form: FormInstance,
+  envs: any,
+  platform: any,
+}
+interface IOption {
+  label: string;
+  value: string;
 }
 const FrontEndInfo: React.FC<IFrontEndInfo> = ({
-  form
+  form,
+  envs,
+  platform: platformList
 }) => {
-  const environment = Form.useWatch('environment', form) || []
-  const gitUrlType = Form.useWatch('gitUrlType', form)
+  const environment = Form.useWatch('environmentIds', form) || []
+  const platform = Form.useWatch('platformIds', form)
+  const gitUrlType = Form.useWatch(['frontEndInfo', 'gitUrlType'], form)
+  console.log(gitUrlType, '======>gitUrlType')
   const [name, setName] = useState('');
-  const [options, setOptions] = useState(OPTIONS)
+  const [options, setOptions] = useState<IOption[]>([])
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
@@ -26,10 +35,18 @@ const FrontEndInfo: React.FC<IFrontEndInfo> = ({
     setOptions([...options, { label: name, value: name }]);
     setName('');
   };
+  useEffect(()=> {
+    setOptions((value) => {
+      const valueNames = value.map((item) => item.value)
+      const names = extractName(platform, platformList, 'id', 'name');
+      return Array.from(new Set([...valueNames, ...names]))
+        .map((val) => ({value: val, label: val}))
+    })
+  }, [platformList, platform])
   return (
     <div>
       <Form.Item
-        name="gitUrlType"
+        name={['frontEndInfo', 'gitUrlType']}
         label="git地址类型"
         initialValue="DETAIL"
       >
@@ -51,7 +68,7 @@ const FrontEndInfo: React.FC<IFrontEndInfo> = ({
         gitUrlType === 'DETAIL' &&
         <Form.Item label="git地址">
           <Form.List
-            name="gitUrls"
+            name={['frontEndInfo', 'gitUrls']}
             initialValue={[{}]}
           >
             {(fields, { add, remove }) => (
@@ -120,14 +137,14 @@ const FrontEndInfo: React.FC<IFrontEndInfo> = ({
           environment.map((env: string, idx: number) => {
             return (
               <div key={idx}>
-                <Form.Item name={['deploy', idx, 'env']} initialValue={env}>
+                <Form.Item name={['frontEndInfo','deploy', idx, 'environment']} initialValue={env}>
                   <div className='font-bold'>
-                    {getLabelByValue(EVN_OPTIONS, env)}
+                    {getLabelByValue(envs, env, 'id', 'name')}
 
                   </div>
                 </Form.Item>
                 <Form.List
-                  name={['deploy', idx, 'data']}
+                  name={['frontEndInfo', 'deploy', idx, 'data']}
                   initialValue={[{}]}
                 >
                   {(fields, { add, remove }) => (
@@ -184,7 +201,7 @@ const FrontEndInfo: React.FC<IFrontEndInfo> = ({
                                   )}
                                 />
                               </Form.Item>
-                              <Form.Item name={[field.name, 'url']}>
+                              <Form.Item name={[field.name, 'note']}>
                                 <Input placeholder="请填写备注" style={{ width: 280 }} />
                               </Form.Item>
                               {

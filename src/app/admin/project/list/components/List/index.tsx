@@ -72,7 +72,7 @@ const List = () => {
   return (
     <>
       <div className="text-right m-4">
-        <AddProject>
+        <AddProject refreshList={refresh}>
           <Button>添加</Button>
         </AddProject>
       </div>

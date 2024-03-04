@@ -45,7 +45,7 @@ export function fetcher(input: Fetch[0], init?: Fetch[1]) {
 }
 export function get(path: string, params?: { [index: string | number]: string }) {
   const query = queryString.stringify(params || {});
-  return fetcher(`${path}?${query}`, {
+  return fetcher(query ? `${path}?${query}` : path , {
     method: 'get',
   })
 }

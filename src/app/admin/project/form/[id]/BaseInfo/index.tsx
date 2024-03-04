@@ -1,36 +1,16 @@
 import { Form, Input, Select } from 'antd';
 import AddPlatform from './AddPlatform';
 import AddEnvironment from './AddEnvironment';
+import React from 'react';
 
-export const OPTIONS = [
-  {
-    label: 'H5',
-    value: 'H5'
-  },
-  {
-    label: '前台1',
-    value: 'PC'
-  },
-  {
-    label: '后台',
-    value: 'ADMIN'
-  }
-]
-export const EVN_OPTIONS = [
-  {
-    label: '测试',
-    value: 'test'
-  },
-  {
-    label: '预发布',
-    value: 'pre'
-  },
-  {
-    label: '正式',
-    value: 'prod'
-  }
-]
-const BaseInfo = () => {
+interface IBaseInfo {
+  envs: any,
+  platform: any
+}
+const BaseInfo: React.FC<IBaseInfo> = ({
+  envs,
+  platform
+}) => {
   return (
     <>
       <Form.Item
@@ -58,7 +38,7 @@ const BaseInfo = () => {
         <div className='flex items-center'>
           <Form.Item
             noStyle
-            name="platform"
+            name="platformIds"
             rules={[{ required: true, message: '请选择平台' }]}
           >
             <Select
@@ -66,7 +46,11 @@ const BaseInfo = () => {
               allowClear
               style={{ width: '100%' }}
               placeholder="请选择平台"
-              options={OPTIONS}
+              fieldNames={{
+                value: 'id',
+                label: 'name'
+              }}
+              options={platform}
             />
           </Form.Item>
           <div className='shrink-0 ml-3'>
@@ -80,7 +64,7 @@ const BaseInfo = () => {
         <div className='flex items-center'>
           <Form.Item
             noStyle
-            name="environment"
+            name="environmentIds"
             rules={[{ required: true, message: '请选择环境' }]}
           >
             <Select
@@ -88,7 +72,11 @@ const BaseInfo = () => {
               allowClear
               style={{ width: '100%' }}
               placeholder="请选择环境"
-              options={EVN_OPTIONS}
+              fieldNames={{
+                value: 'id',
+                label: 'name'
+              }}
+              options={envs}
             />
           </Form.Item>
           <div className='shrink-0 ml-3'>
